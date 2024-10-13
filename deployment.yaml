@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-msa-post
+  labels:
+    app: devcow
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: devcow
+  template:
+    metadata:
+      labels:
+        app: devcow
+    spec:
+      containers:
+      - name: backend-msa-post
+        image: 967361137282.dkr.ecr.ap-northeast-2.amazonaws.com/devcow:post48
+        ports:
+        - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-msa-post-service
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: devcow
